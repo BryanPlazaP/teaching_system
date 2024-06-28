@@ -18,7 +18,10 @@ public class Main {
             System.out.println("1. Create a Student ");
             System.out.println("2. Create a Teacher ");
             System.out.println("3. Create a Subject ");
-            System.out.println("4. Exit ");
+            System.out.println("4. Print Students ");
+            System.out.println("5. Print Teachers ");
+            System.out.println("6. Print Subjects ");
+            System.out.println("7. Exit ");
 
             option = sc.nextInt();
 
@@ -36,20 +39,24 @@ public class Main {
                     subjectList.add(subject);
                     break;
                 case 4:
-                    printStudentList();
+                    System.out.println("***** Printing Students *******");
+                    printStudents(studentList);
                     break;
                 case 5:
-                    printTeacherList();
+                    System.out.println("***** Printing Teachers *******");
+                    printTeachers(teacherList);
                     break;
-
+                case 6:
+                    System.out.println("***** Printing Subjects *******");
+                    printSubjects(subjectList);
+                    break;
                 case 7:
                     System.out.println("***** Exit System *******");
                     break;
+                default:
+                    System.out.println("Invalid option. Please try again.");
             }
-        } while (option != 4);
-    }
-
-    private static void printTeacherList() {
+        } while(option != 7);
     }
 
     public static Student createStudent() {
@@ -64,7 +71,7 @@ public class Main {
         String studentCode = scanner.next();
         System.out.println("Please enter number of semester:");
         int noOfSemester = scanner.nextInt();
-        return new Student(noOfSemester, name, lastName, age, studentCode);
+        return new Student(name, lastName, age, studentCode, noOfSemester);
     }
 
     public static Teacher createTeacher() {
@@ -79,29 +86,37 @@ public class Main {
         String teacherCode = scanner.next();
         System.out.println("Please enter years of Experience:");
         int yearsOfExperience = scanner.nextInt();
-        return new Teacher(yearsOfExperience, name, lastName, age, teacherCode);
+        return new Teacher(name, lastName, age, teacherCode, yearsOfExperience);
     }
 
-    public static void printTeacherList(List<Teacher> teacherList) {
+    public static void printTeachers(List<Teacher> teacherList) {
         int index = 1;
-        for (Teacher teacher : teacherList) {
-            System.out.println(index + " . " + teacher.getName().toUpperCase()
-                    + " - " + teacher.getLastName().toUpperCase());
-            index = index + 1;
+        for(Teacher teacher : teacherList) {
+            System.out.println(index + ". " + teacher.getName() + " " + teacher.getLastName()
+                    + " - Teacher Code: " + teacher.getTeacherCode()
+                    + ", Years of Experience: " + teacher.getYearsOfExperience());
+            index++;
         }
     }
 
-    public static void printStudentList(List<Student> studentList) {
+    public static void printStudents(List<Student> studentList) {
         int index = 1;
-        for (Student student : studentList) {
-            System.out.println(index + " . " + student.getName().toUpperCase()
-                    + " - " + student.getLastName().toUpperCase());
-            index = index + 1;
+        for(Student student : studentList) {
+            System.out.println(index + ". " + student.getName() + " " + student.getLastName()
+                    + " - Student Code: " + student.getStudentCode()
+                    + ", Number of Semesters: " + student.getNoOfSemester());
+            index++;
         }
     }
-    
-    public static void printSubject(){
-        
+
+    public static void printSubjects(List<Subject> subjectList) {
+        int index = 1;
+        for(Subject subject : subjectList) {
+            System.out.println(index + ". " + subject.getName()
+                    + " - Teacher: " + subject.getTeacher().getName() + " " + subject.getTeacher().getLastName()
+                    + ", Students Enrolled: " + subject.getStudentList().size());
+            index++;
+        }
     }
 
     public static Subject createSubject(List<Teacher> teacherList, List<Student> studentList) {
@@ -110,18 +125,17 @@ public class Main {
         String name = scanner.next();
 
         System.out.println("Please select a teacher: ");
-        printTeacherList(teacherList);
+        printTeachers(teacherList);
         int teacherOption = scanner.nextInt();
         Teacher teacher = teacherList.get(teacherOption - 1);
 
-
         List<Student> students = new ArrayList<>();
-        System.out.println("Please enter the no. of Students to register: ");
-        int noOfStudent = scanner.nextInt();
+        System.out.println("Please enter the number of Students to register: ");
+        int noOfStudents = scanner.nextInt();
 
-        for (int n = 0; n < noOfStudent; n++) {
+        for(int n = 0; n < noOfStudents; n++) {
             System.out.println("Please select a student: ");
-            printStudentList(studentList);
+            printStudents(studentList);
             int studentOption = scanner.nextInt();
             Student student = studentList.get(studentOption - 1);
             students.add(student);
